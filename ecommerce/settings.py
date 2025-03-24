@@ -14,11 +14,11 @@ import os
 import dj_database_url
 from pathlib import Path
 import environ
+
 from dotenv import load_dotenv
 
-
-
 load_dotenv()
+
 
 env = environ.Env()
 environ.Env.read_env()
