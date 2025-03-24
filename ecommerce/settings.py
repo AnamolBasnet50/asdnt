@@ -93,17 +93,21 @@ WSGI_APPLICATION = 'ecommerce.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 # Database configuration
-DATABASE_URL = env('DATABASE_URL', default='sqlite:///' + str(BASE_DIR / 'db.sqlite3'))
-
 DATABASES = {
-    'default': dj_database_url.config(
-        env='DATABASE_URL',
-        default='sqlite:///' + str(BASE_DIR / 'db.sqlite3'),
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+
+# Update database configuration from $DATABASE_URL
+if env('DATABASE_URL', default=None):
+    DATABASES['default'] = dj_database_url.parse(
+        env('DATABASE_URL'),
         conn_max_age=600,
         conn_health_checks=True,
         ssl_require=not DEBUG
     )
-}
 
 
 
