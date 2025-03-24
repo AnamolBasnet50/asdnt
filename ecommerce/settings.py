@@ -101,8 +101,10 @@ WSGI_APPLICATION = 'ecommerce.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-        default='postgres://ecommerce_user:your_strong_password@localhost:5432/ecommerce_db',
-        conn_max_age=600
+        default=env('DATABASE_URL', default='postgres://ecommerce_user:your_strong_password@localhost:5432/ecommerce_db'),
+        conn_max_age=600,
+        conn_health_checks=True,
+        ssl_require=not DEBUG
     )
 }
 
