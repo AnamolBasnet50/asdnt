@@ -111,13 +111,19 @@ DATABASES = {
 }
 
 # Update database configuration with DATABASE_URL if available
-if env('DATABASE_URL', default=None):
-    DATABASES['default'] = dj_database_url.config(
-        default=env('DATABASE_URL'),
-        conn_max_age=600,
-        conn_health_checks=True,
-        ssl_require=not DEBUG
-    )
+DATABASE_URL = env('DATABASE_URL', default=None)
+if DATABASE_URL:
+    try:
+        DATABASES['default'] = dj_database_url.parse(
+            DATABASE_URL,
+            conn_max_age=600,
+            conn_health_checks=True,
+            ssl_require=not DEBUG
+        )
+    except ValueError as e:
+        # If DATABASE_URL parsing fails, keep using the default configuration
+        print(f"Warning: Could not parse DATABASE_URL: {e}")
+        # The default configuration from above will be used
 
 
 
