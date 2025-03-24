@@ -100,17 +100,7 @@ WSGI_APPLICATION = 'ecommerce.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.config(
-        default=env('DATABASE_URL'),
-        conn_max_age=600,
-        conn_health_checks=True,
-        ssl_require=not DEBUG
-    )
-}
-
-# Fallback to local database if DATABASE_URL is not set
-if not DATABASES['default']:
-    DATABASES['default'] = {
+    'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': env('DB_NAME', default='ecommerce_db'),
         'USER': env('DB_USER', default='ecommerce_user'),
@@ -118,6 +108,16 @@ if not DATABASES['default']:
         'HOST': env('DB_HOST', default='localhost'),
         'PORT': env('DB_PORT', default='5432'),
     }
+}
+
+# Update database configuration with DATABASE_URL if available
+db_from_env = dj_database_url.config(
+    conn_max_age=600,
+    conn_health_checks=True,
+    ssl_require=not DEBUG
+)
+if db_from_env:
+    DATABASES['default'].update(db_from_env)
 
 
 
