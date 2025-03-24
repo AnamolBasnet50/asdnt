@@ -18,10 +18,16 @@ import environ
 # ✅ Define BASE_DIR first
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# ✅ Load environment variables after defining BASE_DIR
-env = environ.Env()
-environ.Env.read_env(os.path.join(BASE_DIR, '.env'))  # Loads .env file
 
+
+# ✅ Load environment variables after defining BASE_DIR
+
+env = environ.Env()
+environ.Env.read_env()  # Read from .env file
+
+DATABASES = {
+    'default': dj_database_url.config(default=os.getenv('DATABASE_URL'))
+}
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -93,15 +99,6 @@ WSGI_APPLICATION = 'ecommerce.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 # Database configuration
-DATABASES = {
-    'default': dj_database_url.config(
-        default='sqlite:///' + str(BASE_DIR / 'db.sqlite3'),
-        conn_max_age=600,
-        conn_health_checks=True,
-        ssl_require=not DEBUG
-    )
-}
-
 
 
 # Password validation
