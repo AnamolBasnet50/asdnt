@@ -99,31 +99,29 @@ WSGI_APPLICATION = 'ecommerce.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': env('DB_NAME', default='ecommerce_db'),
-        'USER': env('DB_USER', default='ecommerce_user'),
-        'PASSWORD': env('DB_PASSWORD', default='your_strong_password'),
-        'HOST': env('DB_HOST', default='localhost'),
-        'PORT': env('DB_PORT', default='5432'),
-    }
-}
-
-# Update database configuration with DATABASE_URL if available
+# Database configuration
 DATABASE_URL = env('DATABASE_URL', default=None)
+
 if DATABASE_URL:
-    try:
-        DATABASES['default'] = dj_database_url.parse(
-            DATABASE_URL,
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=DATABASE_URL,
             conn_max_age=600,
             conn_health_checks=True,
             ssl_require=not DEBUG
         )
-    except ValueError as e:
-        # If DATABASE_URL parsing fails, keep using the default configuration
-        print(f"Warning: Could not parse DATABASE_URL: {e}")
-        # The default configuration from above will be used
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': env('DB_NAME', default='ecommerce_db'),
+            'USER': env('DB_USER', default='ecommerce_user'),
+            'PASSWORD': env('DB_PASSWORD', default='your_strong_password'),
+            'HOST': env('DB_HOST', default='localhost'),
+            'PORT': env('DB_PORT', default='5432'),
+        }
+    }
 
 
 
