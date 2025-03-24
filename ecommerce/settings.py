@@ -23,11 +23,21 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # ✅ Load environment variables after defining BASE_DIR
 
 env = environ.Env()
-environ.Env.read_env()  # Read from .env file
+environ.Env.read_env()  # Load .env file
 
-DATABASES = {
-    'default': dj_database_url.config(default=os.getenv('DATABASE_URL'))
-}
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+if DATABASE_URL:
+    DATABASES = {
+        "default": dj_database_url.config(default=DATABASE_URL)
+    }
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
