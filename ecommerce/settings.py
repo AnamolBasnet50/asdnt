@@ -15,9 +15,7 @@ import dj_database_url
 from pathlib import Path
 import environ
 
-from dotenv import load_dotenv
 
-load_dotenv()
 
 
 env = environ.Env()
@@ -104,8 +102,6 @@ WSGI_APPLICATION = 'ecommerce.wsgi.application'
 DATABASES = {
     'default': dj_database_url.config(default=os.getenv('DATABASE_URL'))
 }
-
-
 
 
 
