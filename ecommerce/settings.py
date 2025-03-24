@@ -15,13 +15,6 @@ import dj_database_url
 from pathlib import Path
 import environ
 
-
-
-
-env = environ.Env()
-environ.Env.read_env()
-
-
 # ✅ Define BASE_DIR first
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -100,28 +93,37 @@ WSGI_APPLICATION = 'ecommerce.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 # Database configuration
-DATABASE_URL = env('DATABASE_URL', default='')
-
-if DATABASE_URL:
-    DATABASES = {
-        'default': dj_database_url.parse(
-            DATABASE_URL,
-            conn_max_age=600,
-            conn_health_checks=True,
-            ssl_require=not DEBUG
-        )
-    }
-else:
+if DEBUG:
+    # Development database configuration
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': env('DB_NAME', default='ecommerce_db'),
-            'USER': env('DB_USER', default='ecommerce_user'),
-            'PASSWORD': env('DB_PASSWORD', default='your_strong_password'),
-            'HOST': env('DB_HOST', default='localhost'),
-            'PORT': env('DB_PORT', default='5432'),
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
+else:
+    # Production database configuration
+    DATABASE_URL = os.environ.get('DATABASE_URL')
+    if DATABASE_URL:
+        DATABASES = {
+            'default': dj_database_url.config(
+                default=DATABASE_URL,
+                conn_max_age=600,
+                conn_health_checks=True,
+                ssl_require=True
+            )
+        }
+    else:
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.postgresql',
+                'NAME': os.environ.get('DB_NAME', 'ecommerce_db'),
+                'USER': os.environ.get('DB_USER', 'ecommerce_user'),
+                'PASSWORD': os.environ.get('DB_PASSWORD', 'your_strong_password'),
+                'HOST': os.environ.get('DB_HOST', 'localhost'),
+                'PORT': os.environ.get('DB_PORT', '5432'),
+            }
+        }
 
 
 
