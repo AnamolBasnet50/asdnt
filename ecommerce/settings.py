@@ -111,13 +111,13 @@ DATABASES = {
 }
 
 # Update database configuration with DATABASE_URL if available
-db_from_env = dj_database_url.config(
-    conn_max_age=600,
-    conn_health_checks=True,
-    ssl_require=not DEBUG
-)
-if db_from_env:
-    DATABASES['default'].update(db_from_env)
+if env('DATABASE_URL', default=None):
+    DATABASES['default'] = dj_database_url.config(
+        default=env('DATABASE_URL'),
+        conn_max_age=600,
+        conn_health_checks=True,
+        ssl_require=not DEBUG
+    )
 
 
 
