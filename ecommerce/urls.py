@@ -12,7 +12,7 @@ urlpatterns = [
     path('products/', include('products.urls')),
     path('courses/', include('courses.urls')),
     path('orders/', include('orders.urls')),
-    path("", home, name="home"),  # Add this line for the homepage
+    path('', TemplateView.as_view(template_name="index.html"), name='home'),  # Add this line for the homepage
 ]
 
 # Serve media files in development
