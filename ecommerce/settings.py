@@ -14,7 +14,9 @@ import os
 import dj_database_url
 from pathlib import Path
 import environ
-
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 # ✅ Define BASE_DIR first
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -64,6 +66,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'cloudinary',
 
     'home',
      
@@ -144,6 +148,14 @@ USE_I18N = True
 USE_TZ = True
 
 
+
+# Cloudinary Config
+cloudinary.config( 
+  cloud_name = os.getenv("CLOUDINARY_CLOUD_NAME"), 
+  api_key = os.getenv("CLOUDINARY_API_KEY"), 
+  api_secret = os.getenv("CLOUDINARY_API_SECRET") 
+)
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
@@ -159,7 +171,7 @@ STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
