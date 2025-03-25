@@ -63,7 +63,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
 
     'home',
      
@@ -156,9 +155,8 @@ TEMPLATES_DIR = BASE_DIR / "templates"
 TEMPLATES[0]["DIRS"] = [TEMPLATES_DIR]
 
 # Static & Media Files
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Ensure collected static files are served
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')] 
+STATIC_URL = "/static/"
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
