@@ -14,12 +14,20 @@ import os
 import dj_database_url
 from pathlib import Path
 import environ
-
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 # ✅ Define BASE_DIR first
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'ddly9tsfk',
+    'API_KEY': '884144748637469',
+    'API_SECRET': 'wFwjwkp4KnMPLNTJhVdQc6SCeUA',
+}
 
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # ✅ Load environment variables after defining BASE_DIR
 
