@@ -49,7 +49,8 @@ else:
 SECRET_KEY = env('SECRET_KEY', default='your-secret-key')
 DEBUG = env.bool('DEBUG', default=True)
 
-ALLOWED_HOSTS = ['asdnt.onrender.com', '127.0.0.1']
+ALLOWED_HOSTS = ['asdnt.onrender.com', 'localhost', '127.0.0.1']
+
 
 
 
@@ -91,7 +92,7 @@ ROOT_URLCONF = 'ecommerce.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],  # ✅ Ensure this points to the correct path
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -103,7 +104,6 @@ TEMPLATES = [
         },
     },
 ]
-
 WSGI_APPLICATION = 'ecommerce.wsgi.application'
 
 
