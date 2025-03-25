@@ -14,11 +14,24 @@ import os
 import dj_database_url
 from pathlib import Path
 import environ
+import django
+from django.contrib.auth import get_user_model
 
 # ✅ Define BASE_DIR first
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+django.setup()
+User = get_user_model()
 
+admin_username = "admin"
+admin_email = "admin@example.com"
+admin_password = "YourSecurePassword"
+
+if not User.objects.filter(username=admin_username).exists():
+    User.objects.create_superuser(admin_username, admin_email, admin_password)
+    print("✅ Superuser created!")
+else:
+    print("⚠️ Superuser already exists.")
 
 # ✅ Load environment variables after defining BASE_DIR
 
